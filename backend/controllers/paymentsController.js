@@ -12,12 +12,11 @@ exports.listPayments = async (req, res) => {
 
 // Create a new payment
 exports.createPayment = async (req, res) => {
-  const { user_id, amount, date, payment_type, recipient, description } =
-    req.body;
+  const { user_id, amount, payment_type, recipient, description } = req.body;
   try {
     const newPayment = await pool.query(
-      "INSERT INTO Payments (user_id, amount, date, payment_type, recipient, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [user_id, amount, date, payment_type, recipient, description]
+      "INSERT INTO Payments (user_id, amount, payment_type, recipient, description) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [user_id, amount, payment_type, recipient, description]
     );
     res.status(201).json(newPayment.rows[0]);
   } catch (err) {
@@ -28,11 +27,11 @@ exports.createPayment = async (req, res) => {
 // Update an existing payment
 exports.updatePayment = async (req, res) => {
   const { id } = req.params;
-  const { amount, date, payment_type, recipient, description } = req.body;
+  const { amount, payment_type, recipient, description } = req.body;
   try {
     const updatedPayment = await pool.query(
-      "UPDATE Payments SET amount = $1, date = $2, payment_type = $3, recipient = $4, description = $5 WHERE id = $6 RETURNING *",
-      [amount, date, payment_type, recipient, description, id]
+      "UPDATE Payments SET amount = $1,  payment_type = $2, recipient = $3, description = $4 WHERE id = $5 RETURNING *",
+      [amount, payment_type, recipient, description, id]
     );
     if (updatedPayment.rows.length === 0) {
       return res.status(404).send("Payment not found");
