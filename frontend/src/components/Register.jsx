@@ -20,7 +20,6 @@ function Register() {
         { name, email, password }
       );
       login(response.data.token);
-      console.log(response.data);
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -33,8 +32,6 @@ function Register() {
         className="flex flex-col bg-white shadow-2xl rounded px-8 pt-8 pb-8 mb-12"
         onSubmit={handleSubmit}
       >
-        {/* bg-[#E8F0FE] */}
-
         <Input
           type="text"
           value={name}

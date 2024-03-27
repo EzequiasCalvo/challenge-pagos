@@ -1,7 +1,17 @@
-const useAddPaymentModal = (set) => ({
-  isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
-});
+import { useState } from "react";
+
+const useAddPaymentModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onOpen = () => {
+    setIsOpen(true);
+  };
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  return { isOpen, onOpen, onClose };
+};
 
 export default useAddPaymentModal;

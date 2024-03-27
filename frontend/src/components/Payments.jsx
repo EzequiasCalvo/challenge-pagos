@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DeleteButton from "./buttons/DeleteButton";
 import Tooltip from "./Tooltip";
+import useAddPaymentModal from "../hooks/useAddPaymentModal";
+import useDeletePaymentModal from "../hooks/useDeletePaymentModal";
+import useUpdatePaymentModal from "../hooks/useUpdatePaymentModal";
+import AddPaymentModal from "./modals/AddPaymentModal";
+import DeletePaymentModal from "./modals/DeletePaymentModal";
+import UpdatePaymentModal from "./modals/UpdatePaymentModal";
 
 function ItemRow({ name, value }) {
   return (
-    <div class="min-w-[200px] group flex relative px-8">
+    <div className="min-w-[200px] group flex relative px-8">
       <Tooltip name={name} />
       <div className="text-sm font-semibold text-blue-gray-900">{value}</div>
     </div>
@@ -13,15 +19,31 @@ function ItemRow({ name, value }) {
 }
 
 function Payments() {
+  const { isOpen, onOpen, onClose } = useAddPaymentModal();
+  const { isDeleteOpen, onDeleteOpen, onDeleteClose } = useDeletePaymentModal();
+  const { isUpdateOpen, onUpdateOpen, onUpdateClose } = useUpdatePaymentModal();
   const [payments, setPayments] = useState([]);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedPaymentItem, setSelectedPaymentItem] = useState(null);
 
   useEffect(() => {
     const fetchPayments = async () => {
       const result = await axios("http://localhost:4000/api/payments");
+      console.log(result.data);
       setPayments(result.data);
     };
     fetchPayments();
-  }, []);
+  }, [isOpen, isDeleteOpen, isUpdateOpen]);
+
+  const handleDeleteClick = (paymentId) => {
+    setSelectedPaymentId(paymentId);
+    onDeleteOpen();
+  };
+
+  const handleEditClick = (paymentData) => {
+    setSelectedPaymentItem(paymentData);
+    onUpdateOpen();
+  };
 
   return (
     <div className="h-full bg-gradient-to-br from-blue-100 via-blue-50 to-blue-300 flex flex-col items-center">
@@ -31,7 +53,6 @@ function Payments() {
       <div className="pt-2 flex flex-col text-gray-700 bg-white shadow-2xl w-[90%] rounded-xl bg-clip-border overflow-scroll">
         <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
           {payments?.map((payment) => {
-            console.log(payment);
             const {
               id,
               amount,
@@ -60,19 +81,40 @@ function Payments() {
                   <ItemRow name="date" value={date} />
                 </div>
                 <div className="grid grid-flow-col ml-auto place-items-center justify-self-end">
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold py-1 px-2 mx-2 rounded">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold py-1 px-2 mx-2 rounded"
+                    onClick={() => handleEditClick(payment)}
+                  >
                     Edit
                   </button>
-                  <DeleteButton />
+                  <DeleteButton onClick={() => handleDeleteClick(id)} />
                 </div>
               </div>
             );
           })}
         </nav>
       </div>
-      <button className=" bg-blue-500 hover:bg-blue-700 shadow-xl text-white text-sm font-bold py-2 px-4 mx-2 mt-12 rounded">
+      <button
+        onClick={onOpen}
+        className="bg-blue-500 hover:bg-blue-700 shadow-xl text-white text-sm font-bold py-2 px-4 mx-2 my-12 rounded"
+      >
         Add payment
       </button>
+      {isOpen && <AddPaymentModal isOpen={isOpen} onClose={onClose} />}
+      {isDeleteOpen && (
+        <DeletePaymentModal
+          paymentId={selectedPaymentId}
+          isOpen={isDeleteOpen}
+          onClose={onDeleteClose}
+        />
+      )}
+      {isUpdateOpen && (
+        <UpdatePaymentModal
+          selectedPaymentItem={selectedPaymentItem}
+          isOpen={isUpdateOpen}
+          onClose={onUpdateClose}
+        />
+      )}
     </div>
   );
 }

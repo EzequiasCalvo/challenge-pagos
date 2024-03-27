@@ -1,10 +1,11 @@
 import React from "react";
 
-const DeleteButton = () => {
+const DeleteButton = ({ onClick }) => {
   return (
     <button
       className="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-blue-gray-500 transition-all opacity-50 hover:bg-gray-300	active:bg-blue-gray-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
       type="button"
+      onClick={onClick}
     >
       <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
         <svg
