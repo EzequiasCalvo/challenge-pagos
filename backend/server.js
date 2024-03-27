@@ -8,7 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(bodyParser.json());
 
 app.use("/api/payments", paymentRoutes);
