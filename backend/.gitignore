@@ -30,3 +30,5 @@ Thumbs.db
 # Ignore sensitive or personal information
 config.ini
 secrets.txt
+
+vercel.json
