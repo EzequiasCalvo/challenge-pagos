@@ -16,11 +16,13 @@ exports.listPayments = async (req, res) => {
 
 // Create a new payment
 exports.createPayment = async (req, res) => {
-  const { user_id, amount, payment_type, recipient, description } = req.body;
+  const { amount, payment_type, recipient, description } = req.body;
+  const userId = req.user.id;
+
   try {
     const newPayment = await pool.query(
       "INSERT INTO Payments (user_id, amount, payment_type, recipient, description) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [user_id, amount, payment_type, recipient, description]
+      [userId, amount, payment_type, recipient, description]
     );
     res.status(201).json(newPayment.rows[0]);
   } catch (err) {
