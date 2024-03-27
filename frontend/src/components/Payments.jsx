@@ -9,6 +9,7 @@ import useUpdatePaymentModal from "../hooks/useUpdatePaymentModal";
 import AddPaymentModal from "./modals/AddPaymentModal";
 import DeletePaymentModal from "./modals/DeletePaymentModal";
 import UpdatePaymentModal from "./modals/UpdatePaymentModal";
+import { downloadCSV } from "../utils/downloadCSV";
 
 function ItemRow({ name, value }) {
   return (
@@ -74,10 +75,10 @@ function Payments() {
   return (
     <div className="h-full bg-gradient-to-br from-blue-100 via-blue-50 to-blue-300 flex flex-col items-center">
       <div className="w-[90%] flex justify-between">
-        <h1 className="mt-12 mb-2  text-2xl font-bold text-blue-gray-900 ">
+        <h1 className="max-md:hidden mt-12 text-2xl font-bold text-blue-gray-900 ">
           Payments list
         </h1>
-        <div className="flex gap-x-2  mt-10 h-[40px]">
+        <div className="flex items-center mt-5 gap-x-2 h-full">
           <Input
             type="text"
             label="Filter by recipient"
@@ -158,12 +159,21 @@ function Payments() {
           )}
         </nav>
       </div>
-      <button
-        onClick={onOpen}
-        className="bg-blue-500 hover:bg-blue-700 shadow-xl text-white text-sm font-bold py-2 px-4 mx-2 my-12 rounded"
-      >
-        Add payment
-      </button>
+      <div>
+        <button
+          onClick={onOpen}
+          className="bg-blue-500 hover:bg-blue-700 shadow-xl text-white text-sm font-bold py-2 px-4 mx-2 my-12 rounded"
+        >
+          Add payment
+        </button>
+        <button
+          onClick={() => downloadCSV(payments)}
+          className="bg-green-500 hover:bg-green-700 shadow-xl text-white text-sm font-bold py-2 px-4 mx-2  rounded"
+        >
+          Download CSV
+        </button>
+      </div>
+
       {isOpen && <AddPaymentModal isOpen={isOpen} onClose={onClose} />}
       {isDeleteOpen && (
         <DeletePaymentModal
