@@ -2,8 +2,12 @@ const pool = require("../config/dbConfig");
 
 // List all payments
 exports.listPayments = async (req, res) => {
+  const userId = req.user.id;
   try {
-    const allPayments = await pool.query("SELECT * FROM Payments");
+    const allPayments = await pool.query(
+      "SELECT * FROM Payments WHERE user_id = $1",
+      [userId]
+    );
     res.status(200).json(allPayments.rows);
   } catch (err) {
     res.status(500).send("Error retrieving payments: " + err.message);
