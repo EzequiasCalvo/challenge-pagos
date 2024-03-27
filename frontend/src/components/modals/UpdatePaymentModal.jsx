@@ -27,7 +27,7 @@ const EditPaymentModal = ({ isOpen, onClose, selectedPaymentItem }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/payments/${selectedPaymentItem.id}`,
+        `${process.env.REACT_APP_API_URL}/api/payments/${selectedPaymentItem.id}`,
         {
           amount,
           payment_type: paymentType,

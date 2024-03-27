@@ -16,7 +16,7 @@ function Register() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/users/register",
+        `${process.env.REACT_APP_API_URL}/api/users/register`,
         { name, email, password }
       );
       login(response.data.token);

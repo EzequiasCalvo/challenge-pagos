@@ -14,7 +14,7 @@ const DeletePaymentModal = ({ isOpen, onClose, paymentId }) => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:4000/api/payments/${paymentId}`
+        `${process.env.REACT_APP_API_URL}/api/payments/${paymentId}`
       );
 
       if (response.status === 200 || response.status === 204) {

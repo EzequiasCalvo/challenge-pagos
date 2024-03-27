@@ -33,7 +33,9 @@ function Payments() {
 
   useEffect(() => {
     const fetchPayments = async () => {
-      const result = await axios("http://localhost:4000/api/payments");
+      const result = await axios(
+        `${process.env.REACT_APP_API_URL}/api/payments`
+      );
       let filteredPayments = result.data.filter(
         (payment) =>
           payment.recipient
