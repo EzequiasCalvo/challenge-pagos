@@ -7,8 +7,6 @@ import Heading from "../Heading";
 const DeletePaymentModal = ({ isOpen, onClose, paymentId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(isOpen, "is open");
-
   const handleDelete = async () => {
     setIsLoading(true);
 
