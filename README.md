@@ -1,6 +1,8 @@
 # challenge-pagos
 App gestion de pagos
 
+Ver live: https://challenge-pagos-frontend.vercel.app/
+
 ## Test credentials (pueden crear el propio si quieren, este tiene varios pagos realizados).
 ### email: tomas@example.com
 ### password: 123
